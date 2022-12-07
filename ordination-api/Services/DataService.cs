@@ -59,7 +59,7 @@ public class DataService
             db.Laegemiddler.Add(laegemiddler[4]);
 
             db.SaveChanges();
-        }
+        }   
 
         Ordination[] ordinationer = new Ordination[6];
         ordinationer[0] = db.Ordinationer.FirstOrDefault()!;
@@ -143,6 +143,11 @@ public class DataService
         Patient patient = db.Patienter.Find(patientId)!;
         Laegemiddel laegemiddel = db.Laegemiddler.Find(laegemiddelId)!;
 
+        if (patient == null || laegemiddel == null)
+        { 
+            throw new ArgumentNullException();
+        }
+
         PN pn = new PN(startDato, slutDato, antal, laegemiddel);
 
         patient.ordinationer.Add(pn);
@@ -200,9 +205,6 @@ public class DataService
 
         db.SaveChanges();
         return besked;
-
-        // TODO: Implement!
-        return "Ordination anvendt";
     }
 
     /// <summary>
